@@ -5,6 +5,9 @@
         <group>
             <file>file:/C:/xampp/htdocs/SiPadat-Server/include/DbHandler.php</file>
             <file>file:/C:/xampp/htdocs/SiPadat-Server/v1/index.php</file>
+            <file>file:/C:/xampp/htdocs/SiPadat-Server/include/DbConnect.php</file>
+            <file>file:/C:/xampp/htdocs/SiPadat-Server/include/PassHash.php</file>
+            <file>file:/C:/xampp/htdocs/SiPadat-Server/include/Config.php</file>
         </group>
     </open-files>
 </project-private>

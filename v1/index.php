@@ -111,7 +111,7 @@ $app->post('/login', function() use ($app) {
 
         if ($user != NULL) {
             $response["error"] = false;
-            $response['name'] = $user['name'];
+            $response['username'] = $user['username'];
             $response['email'] = $user['email'];
             $response['apiKey'] = $user['api_key'];
             $response['createdAt'] = $user['created_at'];
@@ -214,20 +214,20 @@ $app->get('/tasks/:id', 'authenticate', function($task_id) {
 
 $app->post('/data_sensor', 'authenticate', function() use ($app) {
     // check for required params
-    verifyRequiredParams(array('suhu', 'ph', 'do', 'hasil','idalat'));
+    verifyRequiredParams(array('hpsp', 'hpc', 'uk', 'optime','idalat'));
 
     $response = array();
-    $suhu = $app->request->post('suhu');
-    $ph = $app->request->post('ph');
-    $do = $app->request->post('do');
-    $hasil = $app->request->post('hasil');
+    $hpsp = $app->request->post('hpsp');
+    $hpc = $app->request->post('hpc');
+    $uk = $app->request->post('uk');
+    $optime = $app->request->post('optime');
     $idalat = $app->request->post('idalat');
 
     global $user_id;
     $db = new DbHandler();
 
     // creating new task
-    $task_id = $db->createDataSensor($user_id, $idalat, $suhu, $ph, $do, $hasil);
+    $task_id = $db->createDataSensor($user_id, $idalat, $hpsp, $hpc, $uk, $optime);
 
     if ($task_id != NULL) {
         require_once __DIR__ . '/../libs/gcm/gcm.php';
@@ -238,10 +238,10 @@ $app->post('/data_sensor', 'authenticate', function() use ($app) {
         $user = $db->getUser($user_id);
         
         $msg = array();
-        $msg['suhu'] = $suhu;
-        $msg['ph'] = $ph;
-        $msg['do'] = $do;
-        $msg['hasil'] = $hasil;
+        $msg['hpsp'] = $hpsp;
+        $msg['hpc'] = $hpc;
+        $msg['uk'] = $uk;
+        $msg['optime'] = $optime;
         $msg['idalat'] = $idalat;
         $msg['created_at'] = date('Y-m-d G:i:s');
 
@@ -280,11 +280,10 @@ $app->get('/data_sensor/:id', 'authenticate', function($task_id) {
     if ($result != NULL) {
         $response["error"] = false;
         $response["id"] = $result["id"];
-        $response["suhu"] = $result["suhu"];
-        $response["ph"] = $result["ph"];
-        $response["do"] = $result["do"];
-        $response["hasil"] = $result["hasil"];
-        $response["status"] = $result["status"];
+        $response["hpsp"] = $result["hpsp"];
+        $response["hpc"] = $result["hpc"];
+        $response["uk"] = $result["uk"];
+        $response["optime"] = $result["optime"];
         $response["createdAt"] = $result["created_at"];
         echoRespnse(200, $response);
     } else {
@@ -308,12 +307,11 @@ $app->get('/databyidalat/:id', 'authenticate', function($id_alat) use ($app){
     while ($task = $result->fetch_assoc()) {
         $tmp = array();
         $tmp["id"] = $task["id"];
-        $tmp["suhu"] = $task["suhu"];
-        $tmp["ph"] = $task["ph"];
-        $tmp["do"] = $task["do"];
-        $tmp["hasil"] = $task["hasil"];
-        $tmp["status"] = $task["status"];
-        $tmp["createdAt"] = $task["create_at"];
+        $tmp["hpsp"] = $task["hpsp"];
+        $tmp["hpc"] = $task["hpc"];
+        $tmp["uk"] = $task["uk"];
+        $tmp["optime"] = $task["optime"];
+        $tmp["createdAt"] = $task["created_at"];
         array_push($response["tasks"], $tmp);
     }
 
@@ -378,7 +376,7 @@ $app->post('/registeralat', 'authenticate', function() use ($app) {
 
     if ($res == ID_ALAT_CREATED_SUCCESSFULLY) {
         $response["error"] = false;
-        $response["message"] = "You are successfully registered";
+        $response["message"] = "Tools s uccessfully registered";
     } else if ($res == ID_ALAT_USER_CREATE_FAILED) {
         $response["error"] = true;
         $response["message"] = "Oops! An error occurred while registereing";
@@ -391,7 +389,7 @@ $app->post('/registeralatuser', 'authenticate', function() use ($app) {
     // check for required params
     verifyRequiredParams(array('id_alat', 'nama'));
     $response = array();
-	global $user_id;
+    global $user_id;
     // reading post params
     $id_alat = $app->request->post('id_alat');
     $nama = $app->request->post('nama');
@@ -407,7 +405,7 @@ $app->post('/registeralatuser', 'authenticate', function() use ($app) {
         $response["message"] = "Oops! An error occurred while registereing";
 	} else if ($res == ALAT_USER_ISNOT_EXISTED) {
         $response["error"] = true;
-        $response["message"] = "Sorry, this email already existed";
+        $response["message"] = "Sorry, this tools already existed";
     }
     // echo json response
     echoRespnse(201, $response);
@@ -416,25 +414,23 @@ $app->post('/registeralatuser', 'authenticate', function() use ($app) {
 //post data from alat
 $app->post('/datasensor/:id', 'authenticate', function($id_alat) use ($app) {
     // check for required params
-    verifyRequiredParams(array('suhu', 'ph', 'do', 'hasil', 'status'));
-
+    verifyRequiredParams(array('hpsp', 'hpc', 'uk', 'optime'));
     $response = array();
-    $suhu = $app->request->post('suhu');
-    $ph = $app->request->post('ph');
-    $do = $app->request->post('do');
-    $hasil = $app->request->post('hasil');
-    $status = $app->request->post('status');
+    
+    $hpsp = $app->request->post('hpsp');
+    $hpc = $app->request->post('hpc');
+    $uk = $app->request->post('uk');
+    $optime = $app->request->post('optime');
 
     global $user_id;
     $db = new DbHandler();
 
     // creating new task
-    $task_id = $db->dataSensorByIdAlat($id_alat, $suhu, $ph, $do, $hasil, $status);
+    $task_id = $db->dataSensorByIdAlat($id_alat, $hpsp, $hpc, $uk, $optime);
 
     if ($task_id) {
         $response['error'] = false;
-		$response['message'] = "Succesfull to create data sensor. Please try again";
-        
+	$response['message'] = "Succesfull to create data sensor. Please try again";
         echoRespnse(201, $response);
     } else {
         $response["error"] = true;
@@ -474,6 +470,29 @@ $app->post('/sendtotopic', function() use ($app){
 
     $db = new DbHandler();
     $res = $db->sendToTopic($title, $message);
+
+    if ($res == MESSAGE_SENT_SUCCESSFULLY) {
+        $response["error"] = false;
+        $response["message"] = "message are successfully sent";
+    } else if ($res == MESSAGE_SENT_FAILED) {
+        $response["error"] = true;
+        $response["message"] = "Oops! An error occurred while sending message";
+    } 
+    // echo json response
+    echoRespnse(201, $response);
+});
+
+$app->post('/sendsingle', function() use ($app){
+    
+    verifyRequiredParams(array('to', 'message'));
+    $response = array();
+    global $user_id;
+    // reading post params
+    $to = $app->request->post('to');
+    $message = $app->request->post('message');
+
+    $db = new DbHandler();
+    $res = $db->sendMultiple($to, $message);
 
     if ($res == MESSAGE_SENT_SUCCESSFULLY) {
         $response["error"] = false;

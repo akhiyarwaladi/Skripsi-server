@@ -17,7 +17,7 @@
 define('DB_USERNAME', 'root');
 define('DB_PASSWORD', '');
 define('DB_HOST', 'localhost');
-define('DB_NAME', 'akhiyar_sipadat');
+define('DB_NAME', 'sigap');
 
 define('USER_CREATED_SUCCESSFULLY', 0);
 define('USER_CREATE_FAILED', 1);
@@ -37,7 +37,7 @@ define('MESSAGE_SENT_SUCCESSFULLY', 0);
 define('MESSAGE_SENT_FAILED', 1);
 
 define("GOOGLE_API_KEY", "AIzaSyB9n-b-B_06a5uRM6ZrmE80fjQx0iieycw");
-define("FIREBASE_API_KEY", "AAAAd7LkqSI:APA91bFO5icCDY965iGMVpKpXt_W-AQ-bYCjQ9x7BTkwLxC97gNHRfU3mnjDbGiXABA5z7xeQOtYv9yMwZCfqZyaClGaUtyhwEwUpJjpsM6PBMd8bWVLfjdOoUcinNZ-lo03Vq76c1AZ");
+define("FIREBASE_API_KEY", "AIzaSyA4orLk4ufVP4ovbHVnwQOZQ-KDgNh4qpA");
 
 define('PUSH_FLAG_CHATROOM', 1);
 define('PUSH_FLAG_USER', 2);

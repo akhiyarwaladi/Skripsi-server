@@ -34,7 +34,7 @@ class DbHandler {
             $api_key = $this->generateApiKey();
 
             // insert query
-            $stmt = $this->conn->prepare("INSERT INTO users(name, email, password_hash, api_key, status) values(?, ?, ?, ?, 1)");
+            $stmt = $this->conn->prepare("INSERT INTO user(username, email, password_hash, api_key, status) values(?, ?, ?, ?, 1)");
             $stmt->bind_param("ssss", $name, $email, $password_hash, $api_key);
 
             $result = $stmt->execute();
@@ -86,7 +86,7 @@ class DbHandler {
      */
     public function checkLogin($email, $password) {
         // fetching user by email
-        $stmt = $this->conn->prepare("SELECT password_hash FROM users WHERE email = ?");
+        $stmt = $this->conn->prepare("SELECT password_hash FROM user WHERE email = ?");
 
         $stmt->bind_param("s", $email);
 
@@ -126,7 +126,7 @@ class DbHandler {
      */
 	 
     private function isUserExists($email) {
-        $stmt = $this->conn->prepare("SELECT id from users WHERE email = ?");
+        $stmt = $this->conn->prepare("SELECT id from user WHERE email = ?");
         $stmt->bind_param("s", $email);
         $stmt->execute();
         $stmt->store_result();
@@ -193,14 +193,14 @@ class DbHandler {
      * @param String $email User email id
      */
     public function getUserByEmail($email) {
-        $stmt = $this->conn->prepare("SELECT name, email, api_key, status, created_at FROM users WHERE email = ?");
+        $stmt = $this->conn->prepare("SELECT username, email, api_key, status, created_at FROM user WHERE email = ?");
         $stmt->bind_param("s", $email);
         if ($stmt->execute()) {
             // $user = $stmt->get_result()->fetch_assoc();
-            $stmt->bind_result($name, $email, $api_key, $status, $created_at);
+            $stmt->bind_result($username, $email, $api_key, $status, $created_at);
             $stmt->fetch();
             $user = array();
-            $user["name"] = $name;
+            $user["username"] = $username;
             $user["email"] = $email;
             $user["api_key"] = $api_key;
             $user["status"] = $status;
@@ -235,7 +235,7 @@ class DbHandler {
      * @param String $api_key user api key
      */
     public function getUserId($api_key) {
-        $stmt = $this->conn->prepare("SELECT id FROM users WHERE api_key = ?");
+        $stmt = $this->conn->prepare("SELECT id FROM user WHERE api_key = ?");
         $stmt->bind_param("s", $api_key);
         if ($stmt->execute()) {
             $stmt->bind_result($user_id);
@@ -251,7 +251,7 @@ class DbHandler {
 
     // fetching single user by id
     public function getUser($user_id) {
-        $stmt = $this->conn->prepare("SELECT id, name, email, gcm_registration_id, created_at FROM users WHERE id = ?");
+        $stmt = $this->conn->prepare("SELECT id, username, email, gcm_registration_id, created_at FROM user WHERE id = ?");
         $stmt->bind_param("s", $user_id);
         if ($stmt->execute()) {
             // $user = $stmt->get_result()->fetch_assoc();
@@ -277,7 +277,7 @@ class DbHandler {
      * @return boolean
      */
     public function isValidApiKey($api_key) {
-        $stmt = $this->conn->prepare("SELECT id from users WHERE api_key = ?");
+        $stmt = $this->conn->prepare("SELECT id from user WHERE api_key = ?");
         $stmt->bind_param("s", $api_key);
         $stmt->execute();
         $stmt->store_result();
@@ -297,7 +297,7 @@ class DbHandler {
 
     public function createDataSensor($user_id, $alat_id, $sensor1, $sensor2, $sensor3, $output) {
         $api_key = $this->generateApiKey();
-        $stmt = $this->conn->prepare("INSERT INTO datasensor(id_alat, suhu, ph, do, hasil, status) VALUES(?,?,?,?,?,1)");
+        $stmt = $this->conn->prepare("INSERT INTO datasensor(id_alat, hpsp, hpc, uk, optime) VALUES(?,?,?,?,?)");
         $stmt->bind_param("sssss", $alat_id, $sensor1, $sensor2, $sensor3, $output);
         $result = $stmt->execute();
         $stmt->close();
@@ -325,21 +325,20 @@ class DbHandler {
 
     public function getDataSsensor($task_id, $user_id) {
 
-        $stmt = $this->conn->prepare("SELECT t.id, t.suhu, t.ph, t.do, t.hasil, t.status, t.create_at from datasensor t WHERE t.id = ?");
+        $stmt = $this->conn->prepare("SELECT t.id, t.hpsp, t.hpc, t.uk, t.optime, t.created_at from datasensor t WHERE t.id = ?");
         $stmt->bind_param("i", $task_id);
         echo "sadsa";
         if ($stmt->execute()) {
             $res = array();
-            $stmt->bind_result($id, $sensor1, $sensor2, $sensor3, $output, $status, $created_at);
+            $stmt->bind_result($id, $sensor1, $sensor2, $sensor3, $output, $created_at);
             // TODO
             // $task = $stmt->get_result()->fetch_assoc();
             $stmt->fetch();
             $res["id"] = $id;
-            $res["suhu"] = $sensor1;
-            $res["ph"] = $sensor2;
-            $res["do"] = $sensor3;
-            $res["hasil"] = $output;
-            $res["status"] = $status;
+            $res["hpsp"] = $sensor1;
+            $res["hpc"] = $sensor2;
+            $res["uk"] = $sensor3;
+            $res["optime"] = $output;
             $res["created_at"] = $created_at;
             $stmt->close();
             return $res;
@@ -349,7 +348,7 @@ class DbHandler {
     }
 
     public function getAllDataByIdAlat($id_alat) {
-        $stmt = $this->conn->prepare("SELECT t.* FROM datasensor t WHERE t.id_alat = ? ORDER BY t.create_at DESC LIMIT 30");
+        $stmt = $this->conn->prepare("SELECT t.* FROM datasensor t WHERE t.id_alat = ? ORDER BY t.created_at DESC LIMIT 30");
         $stmt->bind_param("s", $id_alat);
         $stmt->execute();
         $tasks = $stmt->get_result();
@@ -357,23 +356,22 @@ class DbHandler {
         return $tasks;
     }
 	
-	public function dataSensorByIdAlat($idAlat, $suhu, $ph, $do, $hasil, $status){
-		$response = array();
+    public function dataSensorByIdAlat($idAlat, $hpsp, $hpc, $uk, $optime){
+        $response = array();
 
         // insert query
-        $stmt = $this->conn->prepare("INSERT INTO datasensor(id_alat, suhu, ph, do, hasil, status) values(?, ?, ?, ?, ?, ?)");
-        $stmt->bind_param("sssssi", $idAlat,$suhu,$ph,$do,$hasil,$status);
+        $stmt = $this->conn->prepare("INSERT INTO datasensor(id_alat, hpsp, hpc, uk, optime) values(?, ?, ?, ?, ?)");
+        $stmt->bind_param("sssssi", $idAlat,$hpsp, $hpc, $uk, $optime);
 
         $result = $stmt->execute();
-
         $stmt->close();
-		
-		if($result){
-			return DATA_SENSOR_CREATED_SUCCESSFULLY;
-		} else {
-			return DATA_SENSOR_CREATE_FAILED;
-		}
-	}
+
+        if($result){
+                return DATA_SENSOR_CREATED_SUCCESSFULLY;
+        } else {
+                return DATA_SENSOR_CREATE_FAILED;
+        }
+    }
 
     public function getLastDataByIdAlat($id_alat) {
         $stmt = $this->conn->prepare("SELECT t.* FROM datasensor t WHERE t.id_alat = ? ORDER BY t.create_at DESC LIMIT 1");
