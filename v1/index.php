@@ -2,6 +2,8 @@
 
 require_once '../include/DbHandler.php';
 require_once '../include/PassHash.php';
+require_once '../include/Firebase.php';
+require_once '../include/Push.php';
 require '.././libs/Slim/Slim.php';
 
 \Slim\Slim::registerAutoloader();
@@ -484,15 +486,30 @@ $app->post('/sendtotopic', function() use ($app){
 
 $app->post('/sendsingle', function() use ($app){
     
-    verifyRequiredParams(array('to', 'message'));
+    verifyRequiredParams(array('to', 'title', 'message'));
     $response = array();
     global $user_id;
     // reading post params
     $to = $app->request->post('to');
+    $title = $app->request->post('title');
     $message = $app->request->post('message');
-
+    $firebase = new Firebase();
+    $push = new Push();
+    
+    $push->setTitle($title);
+    $push->setMessage($message);
+    $push->setImage('http://api.androidhive.info/images/minion.jpg');
+    $push->setIsBackground(FALSE);
+    $payload = array();
+    $payload['team'] = 'India';
+    $payload['score'] = '5.6';
+    $push->setPayload($payload);
+    $json = '';
+    $json = $push->getPush();
+    
     $db = new DbHandler();
-    $res = $db->sendMultiple($to, $message);
+    //$res = $db->send($to, $json);
+    $res = $firebase->send($to, $json);
 
     if ($res == MESSAGE_SENT_SUCCESSFULLY) {
         $response["error"] = false;

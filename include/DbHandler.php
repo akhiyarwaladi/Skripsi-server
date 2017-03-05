@@ -135,35 +135,35 @@ class DbHandler {
         return $num_rows > 0;
     }
 	
-	public function createAlatUser($id_alat, $user_id, $nama) {
+    public function createAlatUser($id_alat, $user_id, $nama) {
         $response = array();
 
         // Generating API key
         //$api_key = $this->generateApiKey();
-		$haha = 1;
+        $haha = 1;
         // insert query
-		if (!$this->isAlatExists($id_alat)) {
-			return ALAT_USER_ISNOT_EXISTED;
-		}
-		else{
-		
-			$stmt = $this->conn->prepare("INSERT INTO alatuser(id_alat, id_user, nama) values(?, ?, ?)");
-			$stmt->bind_param("sss", $id_alat, $user_id, $nama);
+        if (!$this->isAlatExists($id_alat)) {
+                return ALAT_USER_ISNOT_EXISTED;
+        }
+        else{
 
-			$result = $stmt->execute();
+            $stmt = $this->conn->prepare("INSERT INTO alatuser(id_alat, id_user, nama) values(?, ?, ?)");
+            $stmt->bind_param("sss", $id_alat, $user_id, $nama);
 
-			$stmt->close();
+            $result = $stmt->execute();
 
-			// Check for successful insertion
-			if ($result) {
-				// User successfully inserted
-				return ALAT_USER_CREATED_SUCCESSFULLY;
-			} else {
-				// Failed to create user
-				return ALAT_USER_CREATE_FAILED;
-			}
-		}
-        return $response;
+            $stmt->close();
+
+            // Check for successful insertion
+            if ($result) {
+                // User successfully inserted
+                return ALAT_USER_CREATED_SUCCESSFULLY;
+            } else {
+                // Failed to create user
+                return ALAT_USER_CREATE_FAILED;
+            }
+        }
+    return $response;
     }
 	
 	private function isAlatExists($id_alat) {
@@ -367,9 +367,9 @@ class DbHandler {
         $stmt->close();
 
         if($result){
-                return DATA_SENSOR_CREATED_SUCCESSFULLY;
+            return DATA_SENSOR_CREATED_SUCCESSFULLY;
         } else {
-                return DATA_SENSOR_CREATE_FAILED;
+            return DATA_SENSOR_CREATE_FAILED;
         }
     }
 
@@ -382,7 +382,7 @@ class DbHandler {
         return $tasks;
     }
 	
-	public function getAlatUser($user_id) {
+    public function getAlatUser($user_id) {
         $stmt = $this->conn->prepare("SELECT t.* FROM alatuser t WHERE t.id_user = ?");
         $stmt->bind_param("s", $user_id);
         $stmt->execute();
@@ -415,6 +415,17 @@ class DbHandler {
         }
 
         return $response;
+    }
+    
+    public function getPush() {
+        $res = array();
+        $res['data']['title'] = $this->title;
+        $res['data']['is_background'] = $this->is_background;
+        $res['data']['message'] = $this->message;
+        $res['data']['image'] = $this->image;
+        $res['data']['payload'] = $this->data;
+        $res['data']['timestamp'] = date('Y-m-d G:i:s');
+        return $res;
     }
     
     public function send($to, $message) {
