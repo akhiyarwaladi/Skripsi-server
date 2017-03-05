@@ -498,7 +498,7 @@ $app->post('/sendsingle', function() use ($app){
     
     $push->setTitle($title);
     $push->setMessage($message);
-    $push->setImage('http://api.androidhive.info/images/minion.jpg');
+    $push->setImage('');
     $push->setIsBackground(FALSE);
     $payload = array();
     $payload['team'] = 'India';
