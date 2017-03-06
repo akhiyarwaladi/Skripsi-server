@@ -7,11 +7,6 @@
  */
 
 /**
- * Description of Config
- *
- * @author erdearik
- */
-/**
  * Database configuration
  */
 define('DB_USERNAME', 'root');

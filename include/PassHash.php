@@ -6,11 +6,6 @@
  * and open the template in the editor.
  */
 
-/**
- * Description of PassHash
- *
- * @author erdearik
- */
 class PassHash {
     //put your code here
     // blowfish

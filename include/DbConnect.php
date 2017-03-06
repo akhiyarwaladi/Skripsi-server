@@ -6,11 +6,6 @@
  * and open the template in the editor.
  */
 
-/**
- * Description of DbConnect
- *
- * @author erdearik
- */
 class DbConnect {
     //put your code here
     private $conn;

@@ -4,11 +4,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-/**
- * Description of DbHandler
- *
- * @author erdearik
- */
 class DbHandler {
 
     //put your code hereprivate $conn;
@@ -300,23 +295,19 @@ class DbHandler {
         $stmt = $this->conn->prepare("INSERT INTO datasensor(id_alat, hpsp, hpc, uk, optime) VALUES(?,?,?,?,?)");
         $stmt->bind_param("sssss", $alat_id, $sensor1, $sensor2, $sensor3, $output);
         $result = $stmt->execute();
-        $stmt->close();
-        echo "sdfsdfsdf ";
         if ($result) {
-            echo "sdfsdfsdf ";
             // task row created
             // now assign the task to user
             $new_task_id = $this->conn->insert_id;
-            echo "sdfsdfsdf ";
-//            $res = $this->createUserTask($user_id, $new_task_id);
-            echo "sdfsdfsdf ";
-            if (TRUE) {
-                // task created successfully
-                return $new_task_id;
-            } else {
-                // task failed to create
-                return NULL;
-            }
+            $stmt->fetch();
+            $data = array();
+            $data["hpsp"] = $sensor1;
+            $data["hpc"] = $sensor2;
+            $data["uk"] = $sensor3;
+            $data["optime"] = $output;
+            $stmt->close();
+            return $data;
+
         } else {
             // task failed to create
             return NULL;
@@ -416,83 +407,6 @@ class DbHandler {
 
         return $response;
     }
-    
-    public function getPush() {
-        $res = array();
-        $res['data']['title'] = $this->title;
-        $res['data']['is_background'] = $this->is_background;
-        $res['data']['message'] = $this->message;
-        $res['data']['image'] = $this->image;
-        $res['data']['payload'] = $this->data;
-        $res['data']['timestamp'] = date('Y-m-d G:i:s');
-        return $res;
-    }
-    
-    public function send($to, $message) {
-        $fields = array(
-            'to' => $to,
-            'data' => $message,
-        );
-        return $this->sendPushNotification($fields);
-    }
- 
-    // Sending message to a topic by topic name
-    public function sendToTopic($to, $message) {
-        $fields = array(
-            'to' => '/topics/' . $to,
-            'data' => $message,
-        );
-        return $this->sendPushNotification($fields);
-    }
- 
-    // sending push message to multiple users by firebase registration ids
-    public function sendMultiple($registration_ids, $message) {
-        $fields = array(
-            'to' => $registration_ids,
-            'data' => $message,
-        );
- 
-        return $this->sendPushNotification($fields);
-    }
-    
-    public function sendPushNotification($fields) {
-         
-        require_once __DIR__ . '/config.php';
- 
-        // Set POST variables
-        $url = 'https://fcm.googleapis.com/fcm/send';
- 
-        $headers = array(
-            'Authorization: key=' . FIREBASE_API_KEY,
-            'Content-Type: application/json'
-        );
-        // Open connection
-        $ch = curl_init();
- 
-        // Set the url, number of POST vars, POST data
-        curl_setopt($ch, CURLOPT_URL, $url);
- 
-        curl_setopt($ch, CURLOPT_POST, true);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
- 
-        // Disabling SSL Certificate support temporarly
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
- 
-        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($fields));
- 
-        // Execute post
-        $result = curl_exec($ch);
-        if ($result === FALSE) {
-            die('Curl failed: ' . curl_error($ch));
-        }
- 
-        // Close connection
-        curl_close($ch);
- 
-        return $result;
-    }
-
     /* ------------- `tasks` table method ------------------ */
 
     /**

@@ -228,42 +228,17 @@ $app->post('/data_sensor', 'authenticate', function() use ($app) {
     global $user_id;
     $db = new DbHandler();
 
-    // creating new task
     $task_id = $db->createDataSensor($user_id, $idalat, $hpsp, $hpc, $uk, $optime);
 
     if ($task_id != NULL) {
-        require_once __DIR__ . '/../libs/gcm/gcm.php';
-        require_once __DIR__ . '/../libs/gcm/push.php';
-        $gcm = new GCM();
-        $push = new Push();
         
-        $user = $db->getUser($user_id);
-        
-        $msg = array();
-        $msg['hpsp'] = $hpsp;
-        $msg['hpc'] = $hpc;
-        $msg['uk'] = $uk;
-        $msg['optime'] = $optime;
-        $msg['idalat'] = $idalat;
-        $msg['created_at'] = date('Y-m-d G:i:s');
-
-        $data = array();
-        $data['message'] = $msg;
-        $data['image'] = '';
-
-        $push->setTitle("Skripsian Apps");
-        $push->setIsBackground(FALSE);
-        $push->setFlag(PUSH_FLAG_USER);
-        $push->setData($data);
-        
-        // sending message to topic `global`
-        // On the device every user should subscribe to `global` topic
-        $gcm->send($user['gcm_registration_id'], $push->getPush());
-
-        $response['user'] = $user;
-        $response['error'] = false;
-        
-        echoRespnse(201, $push->getPush());
+        $response["error"] = false;
+        $response['hpsp'] = $task_id['hpsp'];
+        $response['hpc'] = $task_id['hpc'];
+        $response['uk'] = $task_id['uk'];
+        $response['optime'] = $task_id['optime'];
+       
+        echoRespnse(201, $response);
     } else {
         $response["error"] = true;
         $response["message"] = "Failed to create task. Please try again";
