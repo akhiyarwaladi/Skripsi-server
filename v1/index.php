@@ -336,7 +336,7 @@ $app->get('/getalatuser', 'authenticate', function() use ($app){
         $tmp["id"] = $task["id"];
         $tmp["id_alat"] = $task["id_alat"];
         $tmp["id_user"] = $task["id_user"];
-		$tmp["nama"] = $task["nama"];
+	$tmp["nama"] = $task["nama"];
 
         array_push($response["tasks"], $tmp);
     }

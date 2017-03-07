@@ -161,7 +161,7 @@ class DbHandler {
     return $response;
     }
 	
-	private function isAlatExists($id_alat) {
+    private function isAlatExists($id_alat) {
         $stmt = $this->conn->prepare("SELECT id from dataalat WHERE kode = ?");
         $stmt->bind_param("s", $id_alat);
         $stmt->execute();

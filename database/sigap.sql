@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 26, 2017 at 04:01 PM
+-- Generation Time: Mar 07, 2017 at 11:45 AM
 -- Server version: 10.1.16-MariaDB
 -- PHP Version: 5.6.24
 
@@ -41,8 +41,8 @@ INSERT INTO `alatuser` (`id`, `id_alat`, `id_user`, `nama`) VALUES
 (11, 'fb1b48fdedbf4954a1b456fef45ae1f9', 1, 'Sigap003'),
 (12, 'e87fb3ef5b24d00ded37d4c3b4ae1290', 1, 'SIgap004'),
 (13, '40664b8af3ac490bb46fd49888c3ab9f', 2, 'sipadat001'),
-(14, '892210a8d2dae6b7ba9602c80820b287', 3, 'deybi'),
-(15, 'b33cd1d62b1d48fe8ebcc18d29d50c97', 3, 'deybi2');
+(14, '892210a8d2dae6b7ba9602c80820b287', 5, 'Sigap1'),
+(15, 'b33cd1d62b1d48fe8ebcc18d29d50c97', 5, 'Sigap2');
 
 -- --------------------------------------------------------
 
@@ -133,13 +133,46 @@ CREATE TABLE `datasensor` (
 --
 
 INSERT INTO `datasensor` (`id`, `id_alat`, `hpsp`, `hpc`, `uk`, `optime`, `created_at`) VALUES
-(1, 11, 5, 10, 1, 0, '2017-02-12 05:29:01'),
-(2, 12, 5, 4, 1, 0, '2017-02-12 05:29:27'),
-(3, 11, 5, 15, -1, 0, '2017-02-12 05:30:02'),
-(4, 11, 5, 0, 1, 0, '2017-02-12 05:30:17'),
-(5, 13, 5, 2, 0.5, 0, '2017-02-12 17:48:37'),
-(11, 14, 5, 2, 1, 180, '2017-02-26 14:38:08'),
-(12, 14, 5, 2, 1, 180, '2017-02-26 15:00:04');
+(184, 15, 5, 3, 1, 60, '2017-03-03 08:21:01'),
+(185, 14, 5, 3, 1, 60, '2017-03-03 08:21:52'),
+(186, 15, 5, 3, 1, 60, '2017-03-03 08:22:06'),
+(187, 14, 5, 3, 1, 60, '2017-03-03 08:22:56'),
+(188, 15, 5, 3, 1, 60, '2017-03-03 08:23:11'),
+(189, 14, 5, 3, -0.133333, 0, '2017-03-06 04:46:05'),
+(190, 14, 5, 3, 1, 60, '2017-03-06 04:47:09'),
+(191, 14, 5, 3, 1, 60, '2017-03-06 04:48:14'),
+(192, 14, 5, 3, 1, 60, '2017-03-06 04:49:20'),
+(193, 14, 5, 3, -0.133333, 0, '2017-03-06 05:02:20'),
+(194, 14, 5, 3, 1, 60, '2017-03-06 05:03:26'),
+(195, 14, 5, 3, -0.133333, 0, '2017-03-06 05:09:55'),
+(196, 14, 5, 3, 1, 60, '2017-03-06 05:11:01'),
+(197, 14, 5, 3, 1, 60, '2017-03-06 05:12:05'),
+(198, 14, 5, 3, 1, 60, '2017-03-06 05:13:11'),
+(199, 14, 5, 3, 1, 60, '2017-03-06 05:14:15'),
+(200, 14, 5, 3, -0.133333, 0, '2017-03-06 05:17:30'),
+(201, 14, 5, 3, -0.133333, 0, '2017-03-06 05:19:40'),
+(202, 14, 5, 3, 1, 60, '2017-03-06 05:20:45'),
+(203, 14, 5, 3, 1, 60, '2017-03-06 05:21:50'),
+(204, 14, 5, 3, 1, 60, '2017-03-06 05:24:04'),
+(205, 14, 5, 3, 1, 60, '2017-03-06 05:25:07'),
+(206, 14, 5, 3, 1, 60, '2017-03-06 05:26:11'),
+(207, 14, 5, 3, 1, 60, '2017-03-06 05:27:16'),
+(208, 14, 5, 3, -0.133333, 0, '2017-03-06 05:44:41'),
+(209, 15, 5, 3, -0.133333, 0, '2017-03-06 06:07:17'),
+(210, 15, 5, 3, 1, 60, '2017-03-06 06:08:24'),
+(211, 15, 5, 3, 1, 60, '2017-03-06 06:09:29'),
+(212, 15, 5, 3, 1, 60, '2017-03-06 06:10:33'),
+(236, 15, 5, 3, -0.133333, 0, '2017-03-06 08:34:49'),
+(237, 15, 5, 3, 1, 60, '2017-03-06 08:35:55'),
+(238, 15, 5, 3, 1, 60, '2017-03-06 08:36:58'),
+(239, 15, 5, 3, 1, 60, '2017-03-06 08:38:03'),
+(240, 15, 5, 3, 1, 60, '2017-03-06 08:39:10'),
+(241, 15, 5, 3, 1, 60, '2017-03-06 08:40:14'),
+(242, 15, 5, 3, -0.133333, 0, '2017-03-06 08:42:24'),
+(243, 15, 5, 3, 1, 60, '2017-03-06 08:43:29'),
+(244, 15, 5, 3, 1, 60, '2017-03-06 08:44:34'),
+(245, 15, 5, 3, -0.133333, 0, '2017-03-06 08:45:39'),
+(246, 15, 5, 3, 1, 60, '2017-03-06 08:46:44');
 
 -- --------------------------------------------------------
 
@@ -155,7 +188,7 @@ CREATE TABLE `user` (
   `password_hash` varchar(255) NOT NULL,
   `api_key` varchar(32) NOT NULL,
   `access_token` varchar(100) DEFAULT NULL,
-  `gcm_registration_id` text NOT NULL,
+  `fcm_registration_id` text NOT NULL,
   `status` int(11) NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -164,10 +197,9 @@ CREATE TABLE `user` (
 -- Dumping data for table `user`
 --
 
-INSERT INTO `user` (`id`, `username`, `email`, `auth_key`, `password_hash`, `api_key`, `access_token`, `gcm_registration_id`, `status`, `created_at`) VALUES
-(1, 'foo', '', '', '$2a$10$bf5456b02f4b386240b84O/a8TwUOOxIZllD4pWRHfMF9h0jGokXq', '', NULL, '', 0, '2017-02-26 14:01:25'),
-(2, 'akhiyarwaladi', '', '', '$2a$10$bf5456b02f4b386240b84O/a8TwUOOxIZllD4pWRHfMF9h0jGokXq', '', NULL, '', 0, '2017-02-26 14:01:25'),
-(3, 'ayase', 'akiyar@apps.ipb.ac.id', '', '$2a$10$25e83fcf916e1788d6f8cOH33hOW70UOtx05932gDQlUbz26xW2HC', 'ed7edb7931ff62ca7275630ddedfa617', NULL, '', 1, '2017-02-26 14:01:25');
+INSERT INTO `user` (`id`, `username`, `email`, `auth_key`, `password_hash`, `api_key`, `access_token`, `fcm_registration_id`, `status`, `created_at`) VALUES
+(4, 'ayaseeli@gmail.com', 'ayaseeli@gmail.com', '', '$2a$10$2b18b1ab5e8a007ec070au6LeVC9QMQRuRRSOMLYsCHvqNXEoCwkW', '277d3f42ee5e84cfb5fcd973d055f43c', NULL, '', 1, '2017-03-06 10:32:52'),
+(5, 'akiyar18@gmail.com', 'akiyar18@gmail.com', '', '$2a$10$2c7181d77100c2f2825f6uAA1QcYBmU/ZIT2VglFxbAnQJxdugNvC', '5d55ed73dda2730ec3e01a5f8c631966', NULL, '', 1, '2017-03-07 10:18:38');
 
 --
 -- Indexes for dumped tables
@@ -218,12 +250,12 @@ ALTER TABLE `dataalat`
 -- AUTO_INCREMENT for table `datasensor`
 --
 ALTER TABLE `datasensor`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=247;
 --
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 --
 -- Constraints for dumped tables
 --
