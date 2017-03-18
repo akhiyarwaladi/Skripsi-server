@@ -73,6 +73,24 @@ class DbHandler {
         return $response;
     }
 
+    public function updateAlatUser($rssi, $battery, $idalat) {
+        $response = array();
+        $stmt = $this->conn->prepare("UPDATE alatuser SET rssi = ?, battery = ? WHERE id = ?");
+        $stmt->bind_param("iii", $rssi, $battery, $idalat);
+
+        if ($stmt->execute()) {
+            // User successfully updated
+            $response["error"] = false;
+            $response["message"] = 'AlatUser updated successfully';
+        } else {
+            // Failed to update user
+            $response["error"] = true;
+            $response["message"] = "Failed to update AlatUser";
+            $stmt->error;
+        }
+        $stmt->close();
+        return $response;
+    }
     /**
      * Checking user login
      * @param String $email User login email id

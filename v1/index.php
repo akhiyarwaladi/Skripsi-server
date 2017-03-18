@@ -38,7 +38,7 @@ function authenticate(\Slim\Route $route) {
             $app->stop();
         } else {
             global $user_id;
-            // get user primary key id
+            // get user primary keR23y id
             $user_id = $db->getUserId($api_key);
         }
     } else {
@@ -50,19 +50,9 @@ function authenticate(\Slim\Route $route) {
     }
 }
 
-/**
- * ----------- METHODS WITHOUT AUTHENTICATION ---------------------------------
- */
-/**
- * User Registration
- * url - /register
- * method - POST
- * params - name, email, password
- */
 $app->post('/register', function() use ($app) {
     // check for required params
     verifyRequiredParams(array('name', 'email', 'password'));
-
     $response = array();
 
     // reading post params
@@ -90,12 +80,6 @@ $app->post('/register', function() use ($app) {
     echoRespnse(201, $response);
 });
 
-/**
- * User Login
- * url - /login
- * method - POST
- * params - email, password
- */
 $app->post('/login', function() use ($app) {
     // check for required params
     verifyRequiredParams(array('email', 'password'));
@@ -131,32 +115,30 @@ $app->post('/login', function() use ($app) {
     echoRespnse(200, $response);
 });
 
-/*
- * ------------------------ METHODS WITH AUTHENTICATION ------------------------
- */
-
-/* * *
- * Updating user
- *  we use this url to update user's gcm registration id
- */
 $app->put('/users', 'authenticate', function() use ($app) {
     global $user_id;
  
     verifyRequiredParams(array('gcm_registration_id'));
  
     $gcm_registration_id = $app->request->put('gcm_registration_id');
- 
     $db = new DbHandler();
     $response = $db->updateGcmID($user_id, $gcm_registration_id);
  
     echoRespnse(200, $response);
 });
 
-/**
- * Listing all tasks of particual user
- * method GET
- * url /tasks          
- */
+$app->put('/alatuser', 'authenticate', function() use ($app) {
+    verifyRequiredParams(array('rssi', 'battery', 'idalat'));
+ 
+    $rssi = $app->request->put('rssi');
+    $battery = $app->request->put('battery');
+    $idalat = $app->request->put('idalat');
+    $db = new DbHandler();
+    $response = $db->updateAlatUser($rssi, $battery, $idalat);
+ 
+    echoRespnse(200, $response);
+});
+
 $app->get('/tasks', 'authenticate', function() {
     global $user_id;
     $response = array();
@@ -183,12 +165,7 @@ $app->get('/tasks', 'authenticate', function() {
     echoRespnse(200, $response);
 });
 
-/**
- * Listing single task of particual user
- * method GET
- * url /tasks/:id
- * Will return 404 if the task doesn't belongs to user
- */
+
 $app->get('/tasks/:id', 'authenticate', function($task_id) {
     global $user_id;
     $response = array();
