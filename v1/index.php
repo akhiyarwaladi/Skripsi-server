@@ -314,6 +314,10 @@ $app->get('/getalatuser', 'authenticate', function() use ($app){
         $tmp["id_alat"] = $task["id_alat"];
         $tmp["id_user"] = $task["id_user"];
 	$tmp["nama"] = $task["nama"];
+        $tmp["latitude"] = $task["latitude"];
+        $tmp["longitude"] = $task["longitude"];
+        $tmp["rssi"] = $task["rssi"];
+        $tmp["battery"] = $task["battery"];
 
         array_push($response["tasks"], $tmp);
     }
