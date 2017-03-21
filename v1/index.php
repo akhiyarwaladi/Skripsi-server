@@ -318,6 +318,7 @@ $app->get('/getalatuser', 'authenticate', function() use ($app){
         $tmp["longitude"] = $task["longitude"];
         $tmp["rssi"] = $task["rssi"];
         $tmp["battery"] = $task["battery"];
+        $tmp["status"] = $task["status"];
 
         array_push($response["tasks"], $tmp);
     }
