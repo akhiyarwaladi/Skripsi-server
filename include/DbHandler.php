@@ -17,7 +17,7 @@ class DbHandler {
 
     /* ------------- `users` table method ------------------ */
 
-    public function createUser($name, $email, $password) {
+    public function createUser($name, $email, $password, $fcmregid) {
         $response = array();
 
         // First check if user already existed in db
@@ -29,8 +29,8 @@ class DbHandler {
             $api_key = $this->generateApiKey();
 
             // insert query
-            $stmt = $this->conn->prepare("INSERT INTO user(username, email, password_hash, api_key, status) values(?, ?, ?, ?, 1)");
-            $stmt->bind_param("ssss", $name, $email, $password_hash, $api_key);
+            $stmt = $this->conn->prepare("INSERT INTO user(username, email, password_hash, api_key, fcm_registration_id, status) values(?, ?, ?, ?, ?, 1)");
+            $stmt->bind_param("sssss", $name, $email, $password_hash, $api_key, $fcmregid);
 
             $result = $stmt->execute();
 
@@ -75,7 +75,7 @@ class DbHandler {
 
     public function updateAlatUser($rssi, $battery, $idalat) {
         $response = array();
-        $stmt = $this->conn->prepare("UPDATE alatuser SET rssi = ?, battery = ? WHERE id = ?");
+        $stmt = $this->conn->prepare("UPDATE alatuser SET rssi = ?, battery = ?, status = ? WHERE id = ?");
         $stmt->bind_param("iii", $rssi, $battery, $idalat);
 
         if ($stmt->execute()) {
@@ -150,21 +150,13 @@ class DbHandler {
 	
     public function createAlatUser($id_alat, $user_id, $nama) {
         $response = array();
-
-        // Generating API key
-        //$api_key = $this->generateApiKey();
-        $haha = 1;
-        // insert query
         if (!$this->isAlatExists($id_alat)) {
-                return ALAT_USER_ISNOT_EXISTED;
+            return ALAT_USER_ISNOT_EXISTED;
         }
         else{
-
             $stmt = $this->conn->prepare("INSERT INTO alatuser(id_alat, id_user, nama) values(?, ?, ?)");
             $stmt->bind_param("sss", $id_alat, $user_id, $nama);
-
             $result = $stmt->execute();
-
             $stmt->close();
 
             // Check for successful insertion
@@ -176,7 +168,7 @@ class DbHandler {
                 return ALAT_USER_CREATE_FAILED;
             }
         }
-    return $response;
+        return $response;
     }
 	
     private function isAlatExists($id_alat) {

@@ -52,19 +52,20 @@ function authenticate(\Slim\Route $route) {
 
 $app->post('/register', function() use ($app) {
     // check for required params
-    verifyRequiredParams(array('name', 'email', 'password'));
+    verifyRequiredParams(array('name', 'email', 'password', 'fcmregid'));
     $response = array();
 
     // reading post params
     $name = $app->request->post('name');
     $email = $app->request->post('email');
     $password = $app->request->post('password');
+    $fcmregid = $app->request->post('fcmregid');
 
     // validating email address
     validateEmail($email);
 
     $db = new DbHandler();
-    $res = $db->createUser($name, $email, $password);
+    $res = $db->createUser($name, $email, $password, $fcmregid);
 
     if ($res == USER_CREATED_SUCCESSFULLY) {
         $response["error"] = false;
@@ -128,13 +129,14 @@ $app->put('/users', 'authenticate', function() use ($app) {
 });
 
 $app->put('/alatuser', 'authenticate', function() use ($app) {
-    verifyRequiredParams(array('rssi', 'battery', 'idalat'));
+    verifyRequiredParams(array('rssi', 'battery', 'idalat', 'status'));
  
     $rssi = $app->request->put('rssi');
     $battery = $app->request->put('battery');
     $idalat = $app->request->put('idalat');
+    $status = $app->request->put('status');
     $db = new DbHandler();
-    $response = $db->updateAlatUser($rssi, $battery, $idalat);
+    $response = $db->updateAlatUser($rssi, $battery, $idalat, $status);
  
     echoRespnse(200, $response);
 });
@@ -204,12 +206,11 @@ $app->post('/data_sensor', 'authenticate', function() use ($app) {
 
     global $user_id;
     $db = new DbHandler();
-
     $task_id = $db->createDataSensor($user_id, $idalat, $hpsp, $hpc, $uk, $optime);
-
     if ($task_id != NULL) {
         
         $response["error"] = false;
+        $response["message"] = "Succesfully add data sensor";
         $response['hpsp'] = $task_id['hpsp'];
         $response['hpc'] = $task_id['hpc'];
         $response['uk'] = $task_id['uk'];
@@ -311,7 +312,7 @@ $app->get('/getalatuser', 'authenticate', function() use ($app){
     while ($task = $result->fetch_assoc()) {
         $tmp = array();
         $tmp["id"] = $task["id"];
-        $tmp["id_alat"] = $task["id_alat"];
+        $tmp["kode_alat"] = $task["kode_alat"];
         $tmp["id_user"] = $task["id_user"];
 	$tmp["nama"] = $task["nama"];
         $tmp["latitude"] = $task["latitude"];
@@ -335,10 +336,10 @@ $app->post('/registeralat', 'authenticate', function() use ($app) {
 
     if ($res == ID_ALAT_CREATED_SUCCESSFULLY) {
         $response["error"] = false;
-        $response["message"] = "Tools s uccessfully registered";
+        $response["message"] = "Tools successfully registered";
     } else if ($res == ID_ALAT_USER_CREATE_FAILED) {
         $response["error"] = true;
-        $response["message"] = "Oops! An error occurred while registereing";
+        $response["message"] = "Oops! An error occurred while registering tools";
     } 
     // echo json response
     echoRespnse(201, $response);
