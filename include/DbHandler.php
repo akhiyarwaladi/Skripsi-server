@@ -324,30 +324,6 @@ class DbHandler {
         }
     }
 
-    public function getDataSsensor($task_id, $user_id) {
-
-        $stmt = $this->conn->prepare("SELECT t.id, t.hpsp, t.hpc, t.uk, t.optime, t.created_at from datasensor t WHERE t.id = ?");
-        $stmt->bind_param("i", $task_id);
-        echo "sadsa";
-        if ($stmt->execute()) {
-            $res = array();
-            $stmt->bind_result($id, $sensor1, $sensor2, $sensor3, $output, $created_at);
-            // TODO
-            // $task = $stmt->get_result()->fetch_assoc();
-            $stmt->fetch();
-            $res["id"] = $id;
-            $res["hpsp"] = $sensor1;
-            $res["hpc"] = $sensor2;
-            $res["uk"] = $sensor3;
-            $res["optime"] = $output;
-            $res["created_at"] = $created_at;
-            $stmt->close();
-            return $res;
-        } else {
-            return NULL;
-        }
-    }
-
     public function getAllDataByIdAlat($id_alat) {
         $stmt = $this->conn->prepare("SELECT t.* FROM datasensor t WHERE t.id_alat = ? ORDER BY t.created_at DESC LIMIT 30");
         $stmt->bind_param("s", $id_alat);
@@ -401,23 +377,5 @@ class DbHandler {
         return $response;
     }
 
-    /* ------------- `user_tasks` table method ------------------ */
-
-    /**
-     * Function to assign a task to user
-     * @param String $user_id id of the user
-     * @param String $task_id id of the task
-     */
-    public function createUserTask($user_id, $task_id) {
-        $stmt = $this->conn->prepare("INSERT INTO user_tasks(user_id, task_id) values(?, ?)");
-        $stmt->bind_param("ii", $user_id, $task_id);
-        $result = $stmt->execute();
-
-        if (false === $result) {
-            die('execute() failed: ' . htmlspecialchars($stmt->error));
-        }
-        $stmt->close();
-        return $result;
-    }
 }
 ?>

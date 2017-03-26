@@ -141,58 +141,6 @@ $app->put('/alatuser', 'authenticate', function() use ($app) {
     echoRespnse(200, $response);
 });
 
-$app->get('/tasks', 'authenticate', function() {
-    global $user_id;
-    $response = array();
-    $db = new DbHandler();
-
-    // fetching all user tasks
-    $result = $db->getAllUserTasks($user_id);
-
-    $response["error"] = false;
-    $response["tasks"] = array();
-
-    // looping through result and preparing tasks array
-    while ($task = $result->fetch_assoc()) {
-        $tmp = array();
-        $tmp["id"] = $task["id"];
-        $tmp["sensor1"] = $task["sensor1"];
-        $tmp["sensor2"] = $task["sensor2"];
-        $tmp["sensor3"] = $task["sensor3"];
-        $tmp["output"] = $task["output"];
-        $tmp["status"] = $task["status"];
-        $tmp["createdAt"] = $task["created_at"];
-        array_push($response["tasks"], $tmp);
-    }
-    echoRespnse(200, $response);
-});
-
-
-$app->get('/tasks/:id', 'authenticate', function($task_id) {
-    global $user_id;
-    $response = array();
-    $db = new DbHandler();
-
-    // fetch task
-    $result = $db->getTask($task_id, $user_id);
-
-    if ($result != NULL) {
-        $response["error"] = false;
-        $response["id"] = $result["id"];
-        $response["sensor1"] = $result["sensor1"];
-        $response["sensor2"] = $result["sensor2"];
-        $response["sensor3"] = $result["sensor3"];
-        $response["output"] = $result["output"];
-        $response["status"] = $result["status"];
-        $response["createdAt"] = $result["created_at"];
-        echoRespnse(200, $response);
-    } else {
-        $response["error"] = true;
-        $response["message"] = "The requested resource doesn't exists";
-        echoRespnse(404, $response);
-    }
-});
-
 $app->post('/data_sensor', 'authenticate', function() use ($app) {
     // check for required params
     verifyRequiredParams(array('hpsp', 'hpc', 'uk', 'optime','idalat'));
@@ -221,30 +169,6 @@ $app->post('/data_sensor', 'authenticate', function() use ($app) {
         $response["error"] = true;
         $response["message"] = "Failed to create task. Please try again";
         echoRespnse(200, $response);
-    }
-});
-
-$app->get('/data_sensor/:id', 'authenticate', function($task_id) {
-    global $user_id;
-    $response = array();
-    $db = new DbHandler();
-
-    // fetch task
-    $result = $db->getDataSsensor($task_id, $user_id);
-
-    if ($result != NULL) {
-        $response["error"] = false;
-        $response["id"] = $result["id"];
-        $response["hpsp"] = $result["hpsp"];
-        $response["hpc"] = $result["hpc"];
-        $response["uk"] = $result["uk"];
-        $response["optime"] = $result["optime"];
-        $response["createdAt"] = $result["created_at"];
-        echoRespnse(200, $response);
-    } else {
-        $response["error"] = true;
-        $response["message"] = "The requested resource doesn't exists";
-        echoRespnse(404, $response);
     }
 });
 
