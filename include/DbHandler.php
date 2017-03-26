@@ -73,10 +73,10 @@ class DbHandler {
         return $response;
     }
 
-    public function updateAlatUser($rssi, $battery, $idalat) {
+    public function updateAlatUser($rssi, $battery, $idalat, $status) {
         $response = array();
         $stmt = $this->conn->prepare("UPDATE alatuser SET rssi = ?, battery = ?, status = ? WHERE id = ?");
-        $stmt->bind_param("iii", $rssi, $battery, $idalat);
+        $stmt->bind_param("iiii", $rssi, $battery,  $status, $idalat);
 
         if ($stmt->execute()) {
             // User successfully updated
@@ -357,23 +357,6 @@ class DbHandler {
         return $tasks;
     }
 	
-    public function dataSensorByIdAlat($idAlat, $hpsp, $hpc, $uk, $optime){
-        $response = array();
-
-        // insert query
-        $stmt = $this->conn->prepare("INSERT INTO datasensor(id_alat, hpsp, hpc, uk, optime) values(?, ?, ?, ?, ?)");
-        $stmt->bind_param("sssssi", $idAlat,$hpsp, $hpc, $uk, $optime);
-
-        $result = $stmt->execute();
-        $stmt->close();
-
-        if($result){
-            return DATA_SENSOR_CREATED_SUCCESSFULLY;
-        } else {
-            return DATA_SENSOR_CREATE_FAILED;
-        }
-    }
-
     public function getLastDataByIdAlat($id_alat) {
         $stmt = $this->conn->prepare("SELECT t.* FROM datasensor t WHERE t.id_alat = ? ORDER BY t.create_at DESC LIMIT 1");
         $stmt->bind_param("s", $id_alat);
@@ -416,107 +399,6 @@ class DbHandler {
         }
 
         return $response;
-    }
-    /* ------------- `tasks` table method ------------------ */
-
-    /**
-     * Creating new task
-     * @param String $user_id user id to whom task belongs to
-     * @param String $task task text
-     */
-    public function createTask($user_id, $sensor1, $sensor2, $sensor3, $output) {
-        $stmt = $this->conn->prepare("INSERT INTO tasks(sensor1, sensor2, sensor3, output) VALUES(?,?,?,?)");
-        $stmt->bind_param("ssss", $sensor1, $sensor2, $sensor3, $output);
-        $result = $stmt->execute();
-        $stmt->close();
-        echo "sdfsdfsdf ";
-        if ($result) {
-            echo "sdfsdfsdf ";
-            // task row created
-            // now assign the task to user
-            $new_task_id = $this->conn->insert_id;
-            echo "sdfsdfsdf ";
-//            $res = $this->createUserTask($user_id, $new_task_id);
-            echo "sdfsdfsdf ";
-            if (TRUE) {
-                // task created successfully
-                return $new_task_id;
-            } else {
-                // task failed to create
-                return NULL;
-            }
-        } else {
-            // task failed to create
-            return NULL;
-        }
-    }
-
-    /**
-     * Fetching single task
-     * @param String $task_id id of the task
-     */
-    public function getTask($task_id, $user_id) {
-        $stmt = $this->conn->prepare("SELECT t.id, t.sensor1, t.sensor2, t.sensor3, t.output, t.status, t.created_at from tasks t, user_tasks ut WHERE t.id = ? AND ut.task_id = t.id AND ut.user_id = ?");
-        $stmt->bind_param("ii", $task_id, $user_id);
-        if ($stmt->execute()) {
-            $res = array();
-            $stmt->bind_result($id, $sensor1, $sensor2, $sensor3, $output, $status, $created_at);
-            // TODO
-            // $task = $stmt->get_result()->fetch_assoc();
-            $stmt->fetch();
-            $res["id"] = $id;
-            $res["sensor1"] = $sensor1;
-            $res["sensor2"] = $sensor2;
-            $res["sensor3"] = $sensor3;
-            $res["output"] = $output;
-            $res["status"] = $status;
-            $res["created_at"] = $created_at;
-            $stmt->close();
-            return $res;
-        } else {
-            return NULL;
-        }
-    }
-
-    /**
-     * Fetching all user tasks
-     * @param String $user_id id of the user// ORDER BY t.created_at DESC
-     */
-    public function getAllUserTasks($user_id) {
-        $stmt = $this->conn->prepare("SELECT t.* FROM tasks t, user_tasks ut WHERE t.id = ut.task_id AND ut.user_id = ? ORDER BY t.created_at DESC");
-        $stmt->bind_param("i", $user_id);
-        $stmt->execute();
-        $tasks = $stmt->get_result();
-        $stmt->close();
-        return $tasks;
-    }
-
-    /**
-     * Updating task
-     * @param String $task_id id of the task
-     * @param String $task task text
-     * @param String $status task status
-     */
-    public function updateTask($user_id, $task_id, $sensor1, $sensor2, $sensor3, $output, $status) {
-        $stmt = $this->conn->prepare("UPDATE tasks t, user_tasks ut set t.sensor1 = ?, t.sensor2 = ?, t.sensor3 = ?, t.output = ?, t.status = ? WHERE t.id = ? AND t.id = ut.task_id AND ut.user_id = ?");
-        $stmt->bind_param("siiiiii", $sensor1, $sensor2, $sensor3, $output, $status, $task_id, $user_id);
-        $stmt->execute();
-        $num_affected_rows = $stmt->affected_rows;
-        $stmt->close();
-        return $num_affected_rows > 0;
-    }
-
-    /**
-     * Deleting a task
-     * @param String $task_id id of the task to delete
-     */
-    public function deleteTask($user_id, $task_id) {
-        $stmt = $this->conn->prepare("DELETE t FROM tasks t, user_tasks ut WHERE t.id = ? AND ut.task_id = t.id AND ut.user_id = ?");
-        $stmt->bind_param("ii", $task_id, $user_id);
-        $stmt->execute();
-        $num_affected_rows = $stmt->affected_rows;
-        $stmt->close();
-        return $num_affected_rows > 0;
     }
 
     /* ------------- `user_tasks` table method ------------------ */

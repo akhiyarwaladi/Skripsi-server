@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 07, 2017 at 11:45 AM
+-- Generation Time: Mar 26, 2017 at 10:48 PM
 -- Server version: 10.1.16-MariaDB
 -- PHP Version: 5.6.24
 
@@ -28,21 +28,26 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `alatuser` (
   `id` int(11) NOT NULL,
-  `id_alat` varchar(32) NOT NULL,
+  `id_alat` int(11) NOT NULL,
+  `kode_alat` varchar(32) NOT NULL,
   `id_user` int(11) NOT NULL,
-  `nama` varchar(32) NOT NULL
+  `nama` varchar(32) NOT NULL,
+  `rssi` int(11) NOT NULL,
+  `battery` int(11) NOT NULL,
+  `latitude` varchar(32) NOT NULL,
+  `longitude` varchar(32) NOT NULL,
+  `status` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `alatuser`
 --
 
-INSERT INTO `alatuser` (`id`, `id_alat`, `id_user`, `nama`) VALUES
-(11, 'fb1b48fdedbf4954a1b456fef45ae1f9', 1, 'Sigap003'),
-(12, 'e87fb3ef5b24d00ded37d4c3b4ae1290', 1, 'SIgap004'),
-(13, '40664b8af3ac490bb46fd49888c3ab9f', 2, 'sipadat001'),
-(14, '892210a8d2dae6b7ba9602c80820b287', 5, 'Sigap1'),
-(15, 'b33cd1d62b1d48fe8ebcc18d29d50c97', 5, 'Sigap2');
+INSERT INTO `alatuser` (`id`, `id_alat`, `kode_alat`, `id_user`, `nama`, `rssi`, `battery`, `latitude`, `longitude`, `status`) VALUES
+(13, 1, '40664b8af3ac490bb46fd49888c3ab9f', 5, 'Coordinator', 0, 0, '-6.560612', '106.7285546', 0),
+(14, 3, '892210a8d2dae6b7ba9602c80820b287', 5, 'Sigap1', 31, 50, '-6.560378', '106.729542', 1),
+(15, 4, 'b33cd1d62b1d48fe8ebcc18d29d50c97', 5, 'Sigap2', 25, 0, '-6.5600364', '106.7303678', 0),
+(16, 15, '7f972ae97098de7bba71ef6652812886', 5, 'Sigap3', 60, 33, '-6.5606335', '106.7298153', 0);
 
 -- --------------------------------------------------------
 
@@ -64,53 +69,9 @@ CREATE TABLE `dataalat` (
 
 INSERT INTO `dataalat` (`id`, `kode`, `tanggal_produksi`, `status`, `registered_at`) VALUES
 (1, '40664b8af3ac490bb46fd49888c3ab9f', 2016, 0, '2016-07-24 08:00:43'),
-(2, 'fc90840a09747e79f1ef051b4f05d193', 2016, 0, '2016-07-24 08:01:53'),
 (3, '892210a8d2dae6b7ba9602c80820b287', 2016, 0, '2016-07-24 08:16:57'),
 (4, 'b33cd1d62b1d48fe8ebcc18d29d50c97', 2016, 0, '2016-07-30 09:42:37'),
-(5, 'a3c59aa60699b426b7dba2a03e7be301', 2016, 0, '2016-07-30 09:42:39'),
-(6, 'fb1b48fdedbf4954a1b456fef45ae1f9', 2016, 0, '2016-07-30 09:42:40'),
-(7, 'bd7794c408f0dbbbea6731f3befa1164', 2016, 0, '2016-07-30 12:04:49'),
-(8, '66c5e5deb5fcea7f567974cc73011c63', 2016, 0, '2016-07-30 12:04:51'),
-(9, '6d8a3a6d6c1879d702125dc9092a2f90', 2016, 0, '2016-07-30 12:04:51'),
-(10, '830ed14cbab24f4e926e9ec7ee735b05', 2016, 0, '2016-07-30 12:04:52'),
-(11, 'e87fb3ef5b24d00ded37d4c3b4ae1290', 2016, 0, '2016-07-30 12:05:06'),
-(12, '3f550e24770f59b005e77531c38ab3b2', 2016, 0, '2016-07-30 12:05:06'),
-(13, 'b30354d0ebf76a6ddd1bb6cb450e789f', 2016, 0, '2016-07-30 12:05:07'),
-(14, 'b5a5c0be51142e107ec7f9aed403696d', 2016, 0, '2016-07-30 12:05:07'),
-(15, '7f972ae97098de7bba71ef6652812886', 2016, 0, '2016-07-30 12:05:08'),
-(16, '1a08f403c08a6486a55b1f00b7d1357c', 2016, 0, '2016-07-30 12:05:08'),
-(17, '10e66f560f08a6294cab1458523dda79', 2016, 0, '2016-07-30 12:05:09'),
-(18, '8127d162e662163a36e75ef7ca1cfd55', 2016, 0, '2016-07-30 12:05:09'),
-(19, '870fc14a12bdb0cefe68356e9a086a91', 2016, 0, '2016-07-30 12:38:36'),
-(20, 'f0903b12f55c3c716432d3b2c6ca3857', 2016, 0, '2016-08-01 12:45:51'),
-(21, '6ca308e70dba7a144094567a45863fb8', 2016, 0, '2016-08-01 13:43:38'),
-(22, '198e52aa8ef1e5780e3218a485bfbdcc', 2016, 0, '2016-08-01 14:13:20'),
-(23, 'c71316beccf2018817a86af3b1483c18', 2016, 0, '2016-08-01 14:13:21'),
-(24, '74db35701b2cbed7c6bb8727031dd729', 2016, 0, '2016-08-01 14:13:23'),
-(25, 'd991f1ac7ae09df66e7a711fe89098a6', 2016, 0, '2016-08-01 16:10:00'),
-(26, 'c21466863fee733d9e0216c57cdd260c', 2016, 0, '2016-08-01 17:16:45'),
-(33, '89455b83a7fa99a6be6b9c9ace9ff825', 2016, 0, '2016-08-01 17:21:54'),
-(34, '31b99bbaad223f92a3719c34253a0d4e', 2016, 0, '2016-08-01 17:24:10'),
-(35, '356f9af403d098dc954098121880cdae', 2016, 0, '2016-08-01 17:27:37'),
-(36, '08cafd687940874c26d51e18406dfecc', 2016, 0, '2016-08-01 17:37:19'),
-(37, '661c9f563160595014c4dcb4b020f64a', 2016, 0, '2016-10-14 16:34:06'),
-(38, '46f9e0451f0419b323c6073ee9c7af5d', 2016, 0, '2016-10-14 16:34:59'),
-(39, '7a50cefbd5119be40e3496f0df7b9f63', 2016, 0, '2016-10-14 16:34:59'),
-(40, '3dbd8ba007989ab7679297ea4371ffd7', 2016, 0, '2016-10-14 16:35:00'),
-(41, 'f18e18b556901fd9b3e80281fb5fc057', 2017, 0, '2017-02-26 14:06:18'),
-(42, '7aeca4d17a15c0b33ab3cf704650d553', 2017, 0, '2017-02-26 14:06:46'),
-(43, '7528cf069e51fb56ddd53c14b95d4dc8', 2017, 0, '2017-02-26 14:09:11'),
-(44, 'd7348e3f16a617c9cd6591d0246dae90', 2017, 0, '2017-02-26 14:09:15'),
-(45, '4c3ba70071dbd7c7e77e8623d6f03e56', 2017, 0, '2017-02-26 14:09:15'),
-(46, '2e4cd7d29b35b153cf1ee7454faec324', 2017, 0, '2017-02-26 14:09:15'),
-(47, '0c87b02230559d0ae12a27a6092cc513', 2017, 0, '2017-02-26 14:09:16'),
-(48, 'd9a3d850657e808d31fb3efa8c8213b6', 2017, 0, '2017-02-26 14:09:16'),
-(49, 'e141553efc3bfc921b4b43300e2b52d2', 2017, 0, '2017-02-26 14:09:16'),
-(50, 'c1ad06307cb13be2aa95f49d552d9868', 2017, 0, '2017-02-26 14:13:43'),
-(51, 'c310c2646ef4c45632c578ae17eba0ee', 2017, 0, '2017-02-26 14:13:44'),
-(52, 'd3a9a3dc5cde6923731a1fd3d575a7e9', 2017, 0, '2017-02-26 14:13:44'),
-(53, 'c4369b75f7a37ff02759a01c6b22aa2c', 2017, 0, '2017-02-26 14:13:45'),
-(54, '71cd1248da83f1603639868d68e88aee', 2017, 0, '2017-02-26 14:13:47');
+(15, '7f972ae97098de7bba71ef6652812886', 2016, 0, '2016-07-30 12:05:08');
 
 -- --------------------------------------------------------
 
@@ -172,7 +133,13 @@ INSERT INTO `datasensor` (`id`, `id_alat`, `hpsp`, `hpc`, `uk`, `optime`, `creat
 (243, 15, 5, 3, 1, 60, '2017-03-06 08:43:29'),
 (244, 15, 5, 3, 1, 60, '2017-03-06 08:44:34'),
 (245, 15, 5, 3, -0.133333, 0, '2017-03-06 08:45:39'),
-(246, 15, 5, 3, 1, 60, '2017-03-06 08:46:44');
+(246, 15, 5, 3, 1, 60, '2017-03-06 08:46:44'),
+(248, 14, 20, 20, 20, 20, '2017-03-17 21:44:00'),
+(249, 14, 20, 20, 20, 20, '2017-03-17 21:46:07'),
+(250, 14, 5, 3, 1, 60, '2017-03-25 19:13:00'),
+(251, 14, 5, 3, 1, 60, '2017-03-25 19:15:21'),
+(252, 14, 5, 3, 1, 60, '2017-03-26 16:24:53'),
+(253, 14, 5, 3, 1, 60, '2017-03-26 16:25:12');
 
 -- --------------------------------------------------------
 
@@ -184,10 +151,8 @@ CREATE TABLE `user` (
   `id` int(11) NOT NULL,
   `username` varchar(255) NOT NULL,
   `email` varchar(32) NOT NULL,
-  `auth_key` varchar(32) NOT NULL,
   `password_hash` varchar(255) NOT NULL,
   `api_key` varchar(32) NOT NULL,
-  `access_token` varchar(100) DEFAULT NULL,
   `fcm_registration_id` text NOT NULL,
   `status` int(11) NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
@@ -197,9 +162,9 @@ CREATE TABLE `user` (
 -- Dumping data for table `user`
 --
 
-INSERT INTO `user` (`id`, `username`, `email`, `auth_key`, `password_hash`, `api_key`, `access_token`, `fcm_registration_id`, `status`, `created_at`) VALUES
-(4, 'ayaseeli@gmail.com', 'ayaseeli@gmail.com', '', '$2a$10$2b18b1ab5e8a007ec070au6LeVC9QMQRuRRSOMLYsCHvqNXEoCwkW', '277d3f42ee5e84cfb5fcd973d055f43c', NULL, '', 1, '2017-03-06 10:32:52'),
-(5, 'akiyar18@gmail.com', 'akiyar18@gmail.com', '', '$2a$10$2c7181d77100c2f2825f6uAA1QcYBmU/ZIT2VglFxbAnQJxdugNvC', '5d55ed73dda2730ec3e01a5f8c631966', NULL, '', 1, '2017-03-07 10:18:38');
+INSERT INTO `user` (`id`, `username`, `email`, `password_hash`, `api_key`, `fcm_registration_id`, `status`, `created_at`) VALUES
+(5, 'akhiyar', 'akiyar18@gmail.com', '$2a$10$2c7181d77100c2f2825f6uAA1QcYBmU/ZIT2VglFxbAnQJxdugNvC', '5d55ed73dda2730ec3e01a5f8c631966', 'dMoTiG7bj9k:APA91bFiWPLSJCIuBEz7-_Zd1ndpDiSzwVOwp6ogPcajwN3mdLNhdfQ3aG_B-NUOwJMuOKEiwpfbYe1XsxYpObMXvXClq2WIqzRP_SUnJmA-BKyvqlz-2R-I1mT0fF0RjuK_v0s-2z1h', 1, '2017-03-26 14:26:57'),
+(7, 'waladi', 'akiyar@apps.ipb.ac.id', '$2a$10$854b02b09a7dd8c446495uklxXMDrdDnC.6qmnvRjDVYoL7RmTT6.', 'ac5f8d340aa5ad64c51b44afeb8e4546', 'dMoTiG7bj9k:APA91bFiWPLSJCIuBEz7-_Zd1ndpDiSzwVOwp6ogPcajwN3mdLNhdfQ3aG_B-NUOwJMuOKEiwpfbYe1XsxYpObMXvXClq2WIqzRP_SUnJmA-BKyvqlz-2R-I1mT0fF0RjuK_v0s-2z1h', 1, '2017-03-26 14:25:50');
 
 --
 -- Indexes for dumped tables
@@ -210,7 +175,8 @@ INSERT INTO `user` (`id`, `username`, `email`, `auth_key`, `password_hash`, `api
 --
 ALTER TABLE `alatuser`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `id_user` (`id_user`);
+  ADD KEY `id_user` (`id_user`),
+  ADD KEY `id_alat` (`id_alat`);
 
 --
 -- Indexes for table `dataalat`
@@ -240,22 +206,22 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT for table `alatuser`
 --
 ALTER TABLE `alatuser`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 --
 -- AUTO_INCREMENT for table `dataalat`
 --
 ALTER TABLE `dataalat`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=55;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 --
 -- AUTO_INCREMENT for table `datasensor`
 --
 ALTER TABLE `datasensor`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=247;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=254;
 --
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 --
 -- Constraints for dumped tables
 --
@@ -264,7 +230,8 @@ ALTER TABLE `user`
 -- Constraints for table `alatuser`
 --
 ALTER TABLE `alatuser`
-  ADD CONSTRAINT `alatuser_ibfk_1` FOREIGN KEY (`id_user`) REFERENCES `user` (`id`);
+  ADD CONSTRAINT `alatuser_ibfk_1` FOREIGN KEY (`id_user`) REFERENCES `user` (`id`),
+  ADD CONSTRAINT `alatuser_ibfk_2` FOREIGN KEY (`id_alat`) REFERENCES `dataalat` (`id`);
 
 --
 -- Constraints for table `datasensor`
