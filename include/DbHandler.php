@@ -7,7 +7,6 @@
 class DbHandler {
 
     //put your code hereprivate $conn;
-	//hahahahahahaha
     function __construct() {
         require_once dirname(__FILE__) . '/DbConnect.php';
         // opening db connection
@@ -33,7 +32,6 @@ class DbHandler {
             $stmt->bind_param("sssss", $name, $email, $password_hash, $api_key, $fcmregid);
 
             $result = $stmt->execute();
-
             $stmt->close();
 
             // Check for successful insertion
@@ -69,7 +67,6 @@ class DbHandler {
             $stmt->error;
         }
         $stmt->close();
-
         return $response;
     }
 
@@ -254,27 +251,6 @@ class DbHandler {
         }
     }
 
-    // fetching single user by id
-    public function getUser($user_id) {
-        $stmt = $this->conn->prepare("SELECT id, username, email, gcm_registration_id, created_at FROM user WHERE id = ?");
-        $stmt->bind_param("s", $user_id);
-        if ($stmt->execute()) {
-            // $user = $stmt->get_result()->fetch_assoc();
-            $stmt->bind_result($user_id, $name, $email, $gcm_registration_id, $created_at);
-            $stmt->fetch();
-            $user = array();
-            $user["user_id"] = $user_id;
-            $user["name"] = $name;
-            $user["email"] = $email;
-            $user["gcm_registration_id"] = $gcm_registration_id;
-            $user["created_at"] = $created_at;
-            $stmt->close();
-            return $user;
-        } else {
-            return NULL;
-        }
-    }
-
     /**
      * Validating user api key
      * If the api key is there in db, it is a valid key
@@ -356,7 +332,7 @@ class DbHandler {
 
         // Generating API key
         $api_key = $this->generateApiKey();
-		$date = date('Y-m-d G:i:s');
+	$date = date('Y-m-d G:i:s');
         // insert query
         $stmt = $this->conn->prepare("INSERT INTO dataalat(kode, tanggal_produksi) values(?, ?)");
         $stmt->bind_param("ss", $api_key, $date);

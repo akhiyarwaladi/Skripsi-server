@@ -193,7 +193,6 @@ $app->get('/databyidalat/:id', 'authenticate', function($id_alat) use ($app){
         $tmp["createdAt"] = $task["created_at"];
         array_push($response["tasks"], $tmp);
     }
-
     echoRespnse(200, $response);
 });
 
@@ -247,14 +246,13 @@ $app->get('/getalatuser', 'authenticate', function() use ($app){
 
         array_push($response["tasks"], $tmp);
     }
-	echoRespnse(200, $response);
+    echoRespnse(200, $response);
 });
 
 $app->post('/registeralat', 'authenticate', function() use ($app) {
-
-    $response = array();
     global $user_id;
-   
+    $response = array();
+    
     $db = new DbHandler();
     $res = $db->createDataAlat($user_id);
 
@@ -297,10 +295,9 @@ $app->post('/registeralatuser', 'authenticate', function() use ($app) {
 
 $app->delete('/deletealatuser/:id', 'authenticate', function($id_alat) use ($app) {
     // check for required params
-    global $user_id;
-    
+    global $user_id;  
     $db = new DbHandler();
-	$response = array();
+    $response = array();
     $result = $db->deleteAlatUser($id_alat, $user_id);
 
     if ($result) {
