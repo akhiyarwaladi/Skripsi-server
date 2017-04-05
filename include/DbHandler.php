@@ -88,6 +88,25 @@ class DbHandler {
         $stmt->close();
         return $response;
     }
+    
+    public function updateSettingsAlat($hpsp, $optime, $idalat) {
+        $response = array();
+        $stmt = $this->conn->prepare("UPDATE alatuser SET setPoint = ?, opTime = ? WHERE id = ?");
+        $stmt->bind_param("iii", $hpsp, $optime, $idalat);
+
+        if ($stmt->execute()) {
+            // User successfully updated
+            $response["error"] = false;
+            $response["message"] = 'SettingsAlat updated successfully';
+        } else {
+            // Failed to update user
+            $response["error"] = true;
+            $response["message"] = "Failed to update SettingsAlat";
+            $stmt->error;
+        }
+        $stmt->close();
+        return $response;
+    }
     /**
      * Checking user login
      * @param String $email User login email id
@@ -327,6 +346,14 @@ class DbHandler {
         return $tasks;
     }
 
+    public function getAlatUserById($id_alat) {
+        $stmt = $this->conn->prepare("SELECT t.* FROM alatuser t WHERE t.id = ?");
+        $stmt->bind_param("s", $id_alat);
+        $stmt->execute();
+        $tasks = $stmt->get_result();
+        $stmt->close();
+        return $tasks;
+    }
     public function createDataAlat($user_id) {
         $response = array();
 

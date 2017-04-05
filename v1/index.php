@@ -141,6 +141,18 @@ $app->put('/alatuser', 'authenticate', function() use ($app) {
     echoRespnse(200, $response);
 });
 
+$app->put('/settingsalat', 'authenticate', function() use ($app) {
+    verifyRequiredParams(array('hpsp', 'optime', 'idalat'));
+ 
+    $hpsp = $app->request->put('hpsp');
+    $optime = $app->request->put('optime');
+    $idalat = $app->request->put('idalat');
+    $db = new DbHandler();
+    $response = $db->updateSettingsAlat($hpsp, $optime, $idalat);
+ 
+    echoRespnse(200, $response);
+});
+
 $app->post('/data_sensor', 'authenticate', function() use ($app) {
     // check for required params
     verifyRequiredParams(array('hpsp', 'hpc', 'uk', 'optime','idalat'));
@@ -221,6 +233,35 @@ $app->get('/lastdatabyidalat/:id', 'authenticate', function($id_alat) use ($app)
 
     echoRespnse(200, $response);
 });
+$app->get('/getalatuser/:id', 'authenticate', function($id_alat) use ($app){
+    global $user_id;
+    $response = array();
+    $db = new DbHandler();
+    
+    // fetching all user tasks
+    $result = $db->getAlatUserById($id_alat);
+    $response["error"] = false;
+    $response["tasks"] = array();
+
+    // looping through result and preparing tasks array
+    while ($task = $result->fetch_assoc()) {
+        $tmp = array();
+        $tmp["id"] = $task["id"];
+        $tmp["kode_alat"] = $task["kode_alat"];
+        $tmp["id_user"] = $task["id_user"];
+	$tmp["nama"] = $task["nama"];
+        $tmp["latitude"] = $task["latitude"];
+        $tmp["longitude"] = $task["longitude"];
+        $tmp["rssi"] = $task["rssi"];
+        $tmp["battery"] = $task["battery"];
+        $tmp["status"] = $task["status"];
+        $tmp["setPoint"] = $task["setPoint"];
+
+        array_push($response["tasks"], $tmp);
+    }
+    echoRespnse(200, $response);
+});
+
 $app->get('/getalatuser', 'authenticate', function() use ($app){
     global $user_id;
     $response = array();
