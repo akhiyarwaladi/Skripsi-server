@@ -256,6 +256,7 @@ $app->get('/getalatuser/:id', 'authenticate', function($id_alat) use ($app){
         $tmp["battery"] = $task["battery"];
         $tmp["status"] = $task["status"];
         $tmp["setPoint"] = $task["setPoint"];
+        $tmp["opTime"] = $task["opTime"];
 
         array_push($response["tasks"], $tmp);
     }
@@ -405,7 +406,7 @@ $app->post('/sendsingle', function() use ($app){
 
     if ($res == MESSAGE_SENT_SUCCESSFULLY) {
         $response["error"] = false;
-        $response["message"] = "message are successfully sent";
+        $response["message"] = "Notification message are successfully sent";
     } else if ($res == MESSAGE_SENT_FAILED) {
         $response["error"] = true;
         $response["message"] = "Oops! An error occurred while sending message";
