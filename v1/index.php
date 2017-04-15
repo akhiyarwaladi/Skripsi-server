@@ -155,24 +155,28 @@ $app->put('/settingsalat', 'authenticate', function() use ($app) {
 
 $app->post('/data_sensor', 'authenticate', function() use ($app) {
     // check for required params
-    verifyRequiredParams(array('hpsp', 'hpc', 'uk', 'optime','idalat'));
+    verifyRequiredParams(array('hpsp', 'hpc', 'humid', 'temp', 'uk', 'optime','idalat'));
 
     $response = array();
     $hpsp = $app->request->post('hpsp');
     $hpc = $app->request->post('hpc');
+    $humid = $app->request->post('humid');
+    $temp = $app->request->post('temp');
     $uk = $app->request->post('uk');
     $optime = $app->request->post('optime');
     $idalat = $app->request->post('idalat');
 
     global $user_id;
     $db = new DbHandler();
-    $task_id = $db->createDataSensor($user_id, $idalat, $hpsp, $hpc, $uk, $optime);
+    $task_id = $db->createDataSensor($user_id, $idalat, $hpsp, $hpc, $humid, $temp, $uk, $optime);
     if ($task_id != NULL) {
         
         $response["error"] = false;
         $response["message"] = "Succesfully add data sensor";
         $response['hpsp'] = $task_id['hpsp'];
         $response['hpc'] = $task_id['hpc'];
+        $response['humid'] = $task_id['humid'];
+        $response['temp'] = $task_id['temp'];
         $response['uk'] = $task_id['uk'];
         $response['optime'] = $task_id['optime'];
        
@@ -202,7 +206,7 @@ $app->get('/databyidalat/:id', 'authenticate', function($id_alat) use ($app){
         $tmp["hpc"] = $task["hpc"];
         $tmp["uk"] = $task["uk"];
         $tmp["optime"] = $task["optime"];
-        $tmp["createdAt"] = $task["created_at"];
+        $tmp["createdAt"] = strtotime($task["created_at"]);
         array_push($response["tasks"], $tmp);
     }
     echoRespnse(200, $response);

@@ -295,10 +295,10 @@ class DbHandler {
 
     /* ------------- `alat` table method ------------------ */
 
-    public function createDataSensor($user_id, $alat_id, $sensor1, $sensor2, $sensor3, $output) {
+    public function createDataSensor($user_id, $alat_id, $hpsp, $hpc, $humid, $temp, $uk, $optime) {
         $api_key = $this->generateApiKey();
-        $stmt = $this->conn->prepare("INSERT INTO datasensor(id_alat, hpsp, hpc, uk, optime) VALUES(?,?,?,?,?)");
-        $stmt->bind_param("sssss", $alat_id, $sensor1, $sensor2, $sensor3, $output);
+        $stmt = $this->conn->prepare("INSERT INTO datasensor(id_alat, hpsp, hpc, humidity, temperature, uk, optime) VALUES(?,?,?,?,?,?,?)");
+        $stmt->bind_param("sssssss", $alat_id, $hpsp, $hpc, $humid, $temp, $uk, $optime);
         $result = $stmt->execute();
         if ($result) {
             // task row created
@@ -306,10 +306,12 @@ class DbHandler {
             $new_task_id = $this->conn->insert_id;
             $stmt->fetch();
             $data = array();
-            $data["hpsp"] = $sensor1;
-            $data["hpc"] = $sensor2;
-            $data["uk"] = $sensor3;
-            $data["optime"] = $output;
+            $data["hpsp"] = $hpsp;
+            $data["hpc"] = $hpc;
+            $data["humid"] = $humid;
+            $data["temp"] = $temp;
+            $data["uk"] = $uk;
+            $data["optime"] = $optime;
             $stmt->close();
             return $data;
 
