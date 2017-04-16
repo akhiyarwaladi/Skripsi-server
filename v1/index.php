@@ -204,6 +204,8 @@ $app->get('/databyidalat/:id', 'authenticate', function($id_alat) use ($app){
         $tmp["id"] = $task["id"];
         $tmp["hpsp"] = $task["hpsp"];
         $tmp["hpc"] = $task["hpc"];
+        $tmp["humid"] = $task["humidity"];
+        $tmp["temp"] = $task["temperature"];
         $tmp["uk"] = $task["uk"];
         $tmp["optime"] = $task["optime"];
         $tmp["createdAt"] = strtotime($task["created_at"]);
